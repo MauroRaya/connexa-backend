@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: connexa
+  datasource:
+    url: jdbc:h2:mem:connexadb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+    enabled: true
+
+  jwt:
+    secret: "temp_temp_temp_temp_temp_temp"
