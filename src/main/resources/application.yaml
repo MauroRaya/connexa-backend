@@ -10,5 +10,5 @@ spring:
     console:
     enabled: true
 
-  jwt:
-    secret: "temp_temp_temp_temp_temp_temp"
+jwt:
+  secret: "TEMP_not_HARD_enough_FOR_DEBUG123@#!@#@!#!@"
