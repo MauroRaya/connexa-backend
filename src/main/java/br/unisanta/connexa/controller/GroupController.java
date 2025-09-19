@@ -7,10 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.unisanta.connexa.model.Group;
+import br.unisanta.connexa.request.CreateGroupRequest;
 import br.unisanta.connexa.service.GroupService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping(path = "groups")
@@ -33,6 +37,17 @@ public class GroupController {
     @GetMapping(path = "{id}")
     public ResponseEntity<Optional<Group>> getGroupById(@PathVariable Long id) {
         Optional<Group> group = this.groupService.findById(id);
+        
+        return ResponseEntity
+            .ok()
+            .body(group);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Group> createGroup(
+        @Valid @RequestBody CreateGroupRequest request
+    ) {
+        Group group = this.groupService.save(request);
         
         return ResponseEntity
             .ok()
