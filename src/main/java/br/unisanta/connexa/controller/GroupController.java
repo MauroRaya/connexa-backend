@@ -53,4 +53,13 @@ public class GroupController {
             .ok()
             .body(group);
     }
+    
+    @PostMapping(path = "{id}")
+    public ResponseEntity<Void> joinGroupById(@PathVariable Long id) {
+        this.groupService.join(id);
+        
+        return ResponseEntity
+            .ok()
+            .body(null);
+    }
 }
