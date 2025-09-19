@@ -1,10 +1,12 @@
 package br.unisanta.connexa.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.unisanta.connexa.model.Group;
@@ -26,5 +28,14 @@ public class GroupController {
         return ResponseEntity
             .ok()
             .body(groups);
+    }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity<Optional<Group>> getGroupById(@PathVariable Long id) {
+        Optional<Group> group = this.groupService.findById(id);
+        
+        return ResponseEntity
+            .ok()
+            .body(group);
     }
 }
