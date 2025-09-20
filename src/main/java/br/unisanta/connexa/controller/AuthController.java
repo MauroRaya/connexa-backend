@@ -1,5 +1,6 @@
 package br.unisanta.connexa.controller;
 
+import br.unisanta.connexa.dto.StudentDTO;
 import br.unisanta.connexa.model.Student;
 import br.unisanta.connexa.request.LoginRequest;
 import br.unisanta.connexa.request.RegisterRequest;
@@ -25,17 +26,17 @@ public class AuthController {
     }
 
     @PostMapping(path = "register")
-    public ResponseEntity<Student> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<StudentDTO> register(@Valid @RequestBody RegisterRequest request) {
         Student student = new Student();
         student.setName(request.name());
         student.setEmail(request.email());
         student.setPassword(passwordEncoder.encode(request.password()));
 
-        Student createdStudent = this.authService.save(student);
+        StudentDTO createdStudentDTO = this.authService.save(student);
 
         return ResponseEntity
             .ok()
-            .body(createdStudent);
+            .body(createdStudentDTO);
     }
 
     @PostMapping(path = "login")

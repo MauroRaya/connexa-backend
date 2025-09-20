@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import br.unisanta.connexa.dto.StudentDTO;
 import br.unisanta.connexa.model.Student;
 import br.unisanta.connexa.repository.StudentRepository;
 import br.unisanta.connexa.utils.JwtUtil;
@@ -24,12 +25,19 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public Student save(Student student) throws IllegalArgumentException {
+    public StudentDTO save(Student student) throws IllegalArgumentException {
         if (this.studentRepository.findByEmail(student.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Este email já está cadastrado no sistema");
         }
+        
+        Student createdStudent = this.studentRepository.save(student);
 
-        return this.studentRepository.save(student);
+        return new StudentDTO(
+            createdStudent.getId(),
+            createdStudent.getName(),
+            createdStudent.getEmail(),
+            createdStudent.getGroups()
+        );
     }
 
     public String login(Student student) {
