@@ -4,19 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.unisanta.connexa.model.Group;
 import br.unisanta.connexa.request.CreateGroupRequest;
 import br.unisanta.connexa.service.GroupService;
 import jakarta.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping(path = "groups")
 public class GroupController {
     private final GroupService groupService;
