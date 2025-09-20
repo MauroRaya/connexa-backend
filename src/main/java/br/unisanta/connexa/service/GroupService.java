@@ -34,7 +34,7 @@ public class GroupService {
         return this.groupRepository.findById(id);
     }
 
-    public Group save(Group group) {
+    public Group save(Group group) throws EntityNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 

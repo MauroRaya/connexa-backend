@@ -24,7 +24,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public Student save(Student student) {
+    public Student save(Student student) throws IllegalArgumentException {
         if (this.studentRepository.findByEmail(student.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Este email já está cadastrado no sistema");
         }
