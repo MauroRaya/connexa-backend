@@ -11,7 +11,6 @@ import br.unisanta.connexa.model.Group;
 import br.unisanta.connexa.model.Student;
 import br.unisanta.connexa.repository.GroupRepository;
 import br.unisanta.connexa.repository.StudentRepository;
-import br.unisanta.connexa.request.CreateGroupRequest;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
