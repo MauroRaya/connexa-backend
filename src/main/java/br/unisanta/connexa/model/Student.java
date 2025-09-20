@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "students")
@@ -28,6 +28,6 @@ public class Student {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    @JsonManagedReference
+    @JsonIgnoreProperties("students")
     private Set<Group> groups = new HashSet<>();
 }

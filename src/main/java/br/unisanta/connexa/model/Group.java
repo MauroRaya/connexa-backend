@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "groups")
@@ -28,6 +28,6 @@ public class Group {
     private String objective;
 
     @ManyToMany(mappedBy = "groups")
-    @JsonBackReference
+    @JsonIgnoreProperties("groups")
     private Set<Student> students = new HashSet<>();
 }
