@@ -57,11 +57,12 @@ public class GroupService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
-        Student student = this.studentRepository.findByEmail(email)
-            .orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado"));
+        Student student = this.studentRepository.findByEmail(email).orElseThrow(() -> 
+            new EntityNotFoundException(String.format("Estudante com email %s não encontrado", email))
+        );
 
-        Group group = this.groupRepository.findById(groupId).orElseThrow(() ->
-                new EntityNotFoundException(String.format("Grupo com id %d não encontrado", groupId))
+        Group group = this.groupRepository.findById(groupId).orElseThrow(() -> 
+            new EntityNotFoundException(String.format("Grupo com id %d não encontrado", groupId))
         );
 
         if (group.getStudents().contains(student)) {
