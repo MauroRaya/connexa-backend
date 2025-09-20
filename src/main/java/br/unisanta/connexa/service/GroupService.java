@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import br.unisanta.connexa.dto.GroupDTO;
 import br.unisanta.connexa.model.Group;
 import br.unisanta.connexa.model.Student;
 import br.unisanta.connexa.repository.GroupRepository;
@@ -26,15 +27,18 @@ public class GroupService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Group> findAll() {
-        return this.groupRepository.findAll();
+    public List<GroupDTO> findAll() {
+        return this.groupRepository.findAll().stream()
+            .map(GroupDTO::new)
+            .toList();
     }
 
-    public Optional<Group> findById(Long id) {
-        return this.groupRepository.findById(id);
+    public Optional<GroupDTO> findById(Long id) {
+        return this.groupRepository.findById(id)
+            .map(GroupDTO::new);
     }
 
-    public Group save(Group group) throws EntityNotFoundException {
+    public GroupDTO save(Group group) throws EntityNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
@@ -44,10 +48,12 @@ public class GroupService {
         group.getStudents().add(creator);
         creator.getGroups().add(group);
 
-        return this.groupRepository.save(group);
+        Group createdGroup = this.groupRepository.save(group);
+
+        return new GroupDTO(createdGroup);
     }
 
-    public void join(long groupId) throws EntityNotFoundException, IllegalArgumentException {
+    public GroupDTO join(Long groupId) throws EntityNotFoundException, IllegalArgumentException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
@@ -67,5 +73,7 @@ public class GroupService {
 
         this.groupRepository.save(group);
         this.studentRepository.save(student);
+
+        return new GroupDTO(group);
     }
 }

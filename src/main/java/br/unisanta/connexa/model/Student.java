@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,5 +28,5 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
     @JsonIgnoreProperties("students")
-    private Set<Group> groups = new HashSet<>();
+    private Set<Group> groups;
 }

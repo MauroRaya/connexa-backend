@@ -1,5 +1,6 @@
 package br.unisanta.connexa.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.unisanta.connexa.dto.GroupDTO;
 import br.unisanta.connexa.model.Group;
 import br.unisanta.connexa.request.CreateGroupRequest;
 import br.unisanta.connexa.service.GroupService;
@@ -26,25 +29,25 @@ public class GroupController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Group>> getAllGroups() {
-        List<Group> groups = this.groupService.findAll();
+    public ResponseEntity<List<GroupDTO>> getAllGroups() {
+        List<GroupDTO> groupsDTO = this.groupService.findAll();
         
         return ResponseEntity
             .ok()
-            .body(groups);
+            .body(groupsDTO);
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<Optional<Group>> getGroupById(@PathVariable Long id) {
-        Optional<Group> group = this.groupService.findById(id);
+    public ResponseEntity<Optional<GroupDTO>> getGroupById(@PathVariable Long id) {
+        Optional<GroupDTO> groupDTO = this.groupService.findById(id);
         
         return ResponseEntity
             .ok()
-            .body(group);
+            .body(groupDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<Group> createGroup(
+    public ResponseEntity<GroupDTO> createGroup(
         @Valid @RequestBody CreateGroupRequest request
     ) {
         Group group = new Group();
@@ -53,20 +56,21 @@ public class GroupController {
         group.setModality(request.modality());
         group.setLocation(request.location());
         group.setObjective(request.objective());
+        group.setStudents(new HashSet<>());
 
-        Group createdGroup = this.groupService.save(group);
+        GroupDTO createdGroupDTO = this.groupService.save(group);
         
         return ResponseEntity
             .ok()
-            .body(createdGroup);
+            .body(createdGroupDTO);
     }
     
-    @PostMapping(path = "{id}/join")
-    public ResponseEntity<Void> joinGroupById(@PathVariable Long id) {
-        this.groupService.join(id);
+    @PutMapping(path = "{id}/join")
+    public ResponseEntity<GroupDTO> joinGroupById(@PathVariable Long id) {
+        GroupDTO updatedGroupDTO = this.groupService.join(id);
         
         return ResponseEntity
             .ok()
-            .build();
+            .body(updatedGroupDTO);
     }
 }

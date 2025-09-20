@@ -35,8 +35,7 @@ public class AuthService {
         return new StudentDTO(
             createdStudent.getId(),
             createdStudent.getName(),
-            createdStudent.getEmail(),
-            createdStudent.getGroups()
+            createdStudent.getEmail()
         );
     }
 

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
     private String subject;
@@ -29,5 +28,5 @@ public class Group {
 
     @ManyToMany(mappedBy = "groups")
     @JsonIgnoreProperties("groups")
-    private Set<Student> students = new HashSet<>();
+    private Set<Student> students;
 }

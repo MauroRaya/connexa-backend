@@ -6,6 +6,9 @@ import br.unisanta.connexa.request.LoginRequest;
 import br.unisanta.connexa.request.RegisterRequest;
 import br.unisanta.connexa.service.AuthService;
 import jakarta.validation.Valid;
+
+import java.util.HashSet;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +34,7 @@ public class AuthController {
         student.setName(request.name());
         student.setEmail(request.email());
         student.setPassword(passwordEncoder.encode(request.password()));
+        student.setGroups(new HashSet<>());
 
         StudentDTO createdStudentDTO = this.authService.save(student);
 
