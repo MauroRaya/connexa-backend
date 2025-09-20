@@ -35,21 +35,12 @@ public class GroupService {
         return this.groupRepository.findById(id);
     }
 
-    public Group save(CreateGroupRequest request) {
+    public Group save(Group group) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
-        System.out.println(email);
-
         Student creator = this.studentRepository.findByEmail(email)
             .orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado"));
-
-        Group group = new Group();
-        group.setName(request.name());
-        group.setSubject(request.subject());
-        group.setModality(request.modality());
-        group.setLocation(request.location());
-        group.setObjective(request.objective());
 
         group.getStudents().add(creator);
         creator.getGroups().add(group);

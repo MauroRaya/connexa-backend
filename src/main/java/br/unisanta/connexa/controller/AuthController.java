@@ -1,14 +1,11 @@
 package br.unisanta.connexa.controller;
 
 import br.unisanta.connexa.model.Student;
-import br.unisanta.connexa.repository.StudentRepository;
 import br.unisanta.connexa.request.LoginRequest;
 import br.unisanta.connexa.request.RegisterRequest;
-import br.unisanta.connexa.utils.JwtUtil;
+import br.unisanta.connexa.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,48 +13,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
-    private final StudentRepository studentRepository;
+    private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
 
     public AuthController(
-            StudentRepository studentRepository,
-            PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager,
-            JwtUtil jwtUtil
+        AuthService authService,
+        PasswordEncoder passwordEncoder
     ) {
-        this.studentRepository = studentRepository;
+        this.authService = authService;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping(path = "register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-        if (this.studentRepository.findByEmail(request.email()).isPresent()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Este email já está cadastrado no sistema");
-        }
-
+    public ResponseEntity<Student> register(@Valid @RequestBody RegisterRequest request) {
         Student student = new Student();
         student.setName(request.name());
         student.setEmail(request.email());
         student.setPassword(passwordEncoder.encode(request.password()));
 
-        this.studentRepository.save(student);
+        Student createdStudent = this.authService.save(student);
 
-        return ResponseEntity.ok("Estudante cadastrado com sucesso");
+        return ResponseEntity
+            .ok()
+            .body(createdStudent);
     }
 
     @PostMapping(path = "login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
-        this.authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password())
-        );
+        Student student = new Student();
+        student.setEmail(request.email());
+        student.setPassword(request.password());
 
-        String token = this.jwtUtil.generateToken(request.email());
+        String token = authService.login(student);
 
         return ResponseEntity.ok(token);
     }

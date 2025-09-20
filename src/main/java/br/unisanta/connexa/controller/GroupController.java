@@ -47,19 +47,26 @@ public class GroupController {
     public ResponseEntity<Group> createGroup(
         @Valid @RequestBody CreateGroupRequest request
     ) {
-        Group group = this.groupService.save(request);
+        Group group = new Group();
+        group.setName(request.name());
+        group.setSubject(request.subject());
+        group.setModality(request.modality());
+        group.setLocation(request.location());
+        group.setObjective(request.objective());
+
+        Group createdGroup = this.groupService.save(group);
         
         return ResponseEntity
             .ok()
-            .body(group);
+            .body(createdGroup);
     }
     
-    @PostMapping(path = "{id}")
+    @PostMapping(path = "{id}/join")
     public ResponseEntity<Void> joinGroupById(@PathVariable Long id) {
         this.groupService.join(id);
         
         return ResponseEntity
             .ok()
-            .body(null);
+            .build();
     }
 }
