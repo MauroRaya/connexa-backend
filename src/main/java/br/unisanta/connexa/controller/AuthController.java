@@ -1,6 +1,7 @@
 package br.unisanta.connexa.controller;
 
 import br.unisanta.connexa.dto.StudentDTO;
+import br.unisanta.connexa.dto.TokenDTO;
 import br.unisanta.connexa.model.Student;
 import br.unisanta.connexa.request.LoginRequest;
 import br.unisanta.connexa.request.RegisterRequest;
@@ -46,13 +47,17 @@ public class AuthController {
     }
 
     @PostMapping(path = "login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<TokenDTO> login(@Valid @RequestBody LoginRequest request) {
         Student student = new Student();
         student.setEmail(request.email());
         student.setPassword(request.password());
 
-        String token = authService.login(student);
+        TokenDTO tokenDTO = new TokenDTO(
+            authService.generateToken(student)
+        );
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity
+            .ok()
+            .body(tokenDTO);
     }
 }

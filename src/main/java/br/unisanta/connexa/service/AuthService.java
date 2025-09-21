@@ -39,7 +39,7 @@ public class AuthService {
         );
     }
 
-    public String login(Student student) {
+    public String generateToken(Student student) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(student.getEmail(), student.getPassword())
         );
