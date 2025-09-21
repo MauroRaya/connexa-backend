@@ -38,14 +38,20 @@ Content-Type: application/json
 **Resposta 400 Bad Request**
 ```json
 {
-  "email": "Formato de email inválido",
-  "password": "A senha deve ter no mínimo 8 caracteres"
+  "errors": [
+    "Formato de email inválido",
+    "A senha deve ter no mínimo 8 caracteres"
+  ]
 }
 ```
 
 **Resposta 409 Conflict**
 ```
-Este email já está cadastrado no sistema
+{
+  "errors": [
+    "Este email já está cadastrado no sistema"
+  ]
+}
 ```
 
 ---
@@ -70,7 +76,11 @@ Autentica um estudante e retorna um token JWT.
 
 **Resposta 500 Internal Server Error**
 ```
-Erro interno: Bad credentials
+{
+  "errors": [
+    "Erro interno: Bad credentials"
+  ]
+}
 ```
 
 ---
@@ -125,7 +135,11 @@ Retorna os detalhes de um grupo específico.
 
 **Resposta 404 Not Found**
 ```
-Grupo com id 99 não encontrado
+{
+  "errors": [
+    "Grupo com id 99 não encontrado"
+  ]
+}
 ```
 
 ---
@@ -196,10 +210,18 @@ Adiciona o estudante autenticado a um grupo existente. *(Requer JWT Token)*
 
 **Resposta 400 Bad Request**
 ```
-Estudante já faz parte desse grupo
+{
+  "errors": [
+    "Estudante já faz parte desse grupo"
+  ]
+}
 ```
 
 **Resposta 404 Not Found**
 ```
-Grupo com id 99 não encontrado
+{
+  "errors": [
+    "Grupo com id 99 não encontrado"
+  ]
+}
 ```
