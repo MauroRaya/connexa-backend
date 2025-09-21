@@ -62,8 +62,10 @@ Autentica um estudante e retorna um token JWT.
 ```
 
 **Resposta 200 OK**
-```
-eyJhbGciOiJIUzI1NiIsInR5cCI...
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
 ```
 
 **Resposta 500 Internal Server Error**
